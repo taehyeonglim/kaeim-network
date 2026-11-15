@@ -1,0 +1,73 @@
+{
+  "base": "http://127.0.0.1:5173/",
+  "checkedAt": "2026-11-15T02:10:15.069Z",
+  "scenarios": [
+    {
+      "name": "default map renders real graph and corpus totals",
+      "status": "passed"
+    },
+    {
+      "name": "clicking a real graph node opens its researcher profile",
+      "status": "passed"
+    },
+    {
+      "name": "topic filter updates data and graph within measured time",
+      "status": "passed"
+    },
+    {
+      "name": "topic map and list have usable research results",
+      "status": "passed"
+    },
+    {
+      "name": "researcher profile and comparison up to three groups",
+      "status": "passed"
+    },
+    {
+      "name": "paper detail provides source and traceable classification evidence",
+      "status": "passed"
+    },
+    {
+      "name": "share state restores filters and selected paper",
+      "status": "passed"
+    },
+    {
+      "name": "missing 2026 references remain visibly unknown",
+      "status": "passed"
+    },
+    {
+      "name": "citation map retains pre-window references as context",
+      "status": "passed"
+    },
+    {
+      "name": "empty results and reset are usable",
+      "status": "passed"
+    },
+    {
+      "name": "data guidance modal opens and closes with keyboard",
+      "status": "passed"
+    },
+    {
+      "name": "mobile network and list have no horizontal overflow",
+      "status": "passed"
+    },
+    {
+      "name": "embed view omits introduction and preserves controls",
+      "status": "passed"
+    }
+  ],
+  "errors": [],
+  "performance": {
+    "topicFilterMs": 108
+  },
+  "screenshots": [
+    "/Users/taehyeong/Developer/GitHub/kaeim-network/tmp/atlas-qa/desktop.png",
+    "/Users/taehyeong/Developer/GitHub/kaeim-network/tmp/atlas-qa/topics.png",
+    "/Users/taehyeong/Developer/GitHub/kaeim-network/tmp/atlas-qa/comparison.png",
+    "/Users/taehyeong/Developer/GitHub/kaeim-network/tmp/atlas-qa/researcher.png",
+    "/Users/taehyeong/Developer/GitHub/kaeim-network/tmp/atlas-qa/paper-evidence.png",
+    "/Users/taehyeong/Developer/GitHub/kaeim-network/tmp/atlas-qa/citations.png",
+    "/Users/taehyeong/Developer/GitHub/kaeim-network/tmp/atlas-qa/mobile.png",
+    "/Users/taehyeong/Developer/GitHub/kaeim-network/tmp/atlas-qa/mobile-researcher.png"
+  ],
+  "status": "passed"
+}

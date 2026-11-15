@@ -1,0 +1,271 @@
+{
+  "version": "1.0.0",
+  "topics": [
+    {
+      "id": "ai",
+      "label": "AI·데이터 기반 교육",
+      "short": "AI·데이터",
+      "color": "#6554c0",
+      "patterns": [
+        "생성형\\s*(?:AI|인공지능)",
+        "인공지능",
+        "\\bAI\\b",
+        "chatgpt",
+        "generative ai",
+        "artificial intelligence",
+        "학습\\s*분석",
+        "learning analytics",
+        "빅\\s*데이터",
+        "데이터\\s*리터러시"
+      ]
+    },
+    {
+      "id": "online",
+      "label": "온라인·원격교육",
+      "short": "온라인·원격교육",
+      "color": "#2589ac",
+      "patterns": [
+        "이러닝",
+        "\\be[ -]?learning\\b",
+        "온라인\\s*(?:학습|수업|교육)",
+        "원격\\s*(?:교육|수업|학습)",
+        "사이버\\s*(?:대학|교육|학교)",
+        "블렌디드",
+        "플립드",
+        "플립\\s*러닝",
+        "flipped",
+        "blended learning",
+        "online learning",
+        "distance education",
+        "교육방송"
+      ]
+    },
+    {
+      "id": "design",
+      "label": "교수설계·학습환경",
+      "short": "교수설계",
+      "color": "#d18a2f",
+      "patterns": [
+        "교수\\s*설계",
+        "수업\\s*설계",
+        "학습\\s*설계",
+        "instructional design",
+        "learning design",
+        "설계기반",
+        "design[ -]based",
+        "문제\\s*중심\\s*학습",
+        "프로젝트\\s*(?:기반|학습)",
+        "스캐폴딩",
+        "scaffolding"
+      ]
+    },
+    {
+      "id": "psychology",
+      "label": "학습심리·자기조절",
+      "short": "학습심리",
+      "color": "#c36585",
+      "patterns": [
+        "자기\\s*조절",
+        "self[ -]regulated",
+        "학습\\s*동기",
+        "learning motivation",
+        "메타\\s*인지",
+        "metacognition",
+        "인지\\s*부하",
+        "cognitive load",
+        "학습\\s*몰입",
+        "learning flow",
+        "자기\\s*효능",
+        "self[ -]efficacy"
+      ]
+    },
+    {
+      "id": "collaboration",
+      "label": "협력·상호작용",
+      "short": "협력·상호작용",
+      "color": "#3c9690",
+      "patterns": [
+        "협력\\s*학습",
+        "협동\\s*학습",
+        "collaborative learning",
+        "cooperative learning",
+        "상호\\s*작용",
+        "interaction",
+        "사회적\\s*실재감",
+        "social presence",
+        "학습\\s*공동체",
+        "온라인\\s*토론",
+        "online discussion",
+        "실천\\s*공동체"
+      ]
+    },
+    {
+      "id": "literacy",
+      "label": "미디어·디지털 리터러시",
+      "short": "미디어·리터러시",
+      "color": "#588140",
+      "patterns": [
+        "미디어\\s*(?:교육|리터러시)",
+        "디지털\\s*리터러시",
+        "digital literacy",
+        "media literacy",
+        "정보\\s*리터러시",
+        "디지털\\s*시민",
+        "digital citizenship",
+        "미디어\\s*역량"
+      ]
+    },
+    {
+      "id": "immersive",
+      "label": "실감형 학습환경",
+      "short": "실감형 학습",
+      "color": "#896ac3",
+      "patterns": [
+        "메타버스",
+        "metaverse",
+        "가상\\s*현실",
+        "증강\\s*현실",
+        "혼합\\s*현실",
+        "virtual reality",
+        "augmented reality",
+        "\\bVR\\b",
+        "\\bAR\\b",
+        "\\bXR\\b",
+        "실감형",
+        "게임\\s*기반",
+        "game[ -]based"
+      ]
+    },
+    {
+      "id": "teacher",
+      "label": "교사교육·전문성",
+      "short": "교사교육",
+      "color": "#ba7044",
+      "patterns": [
+        "교사\\s*교육",
+        "교원\\s*(?:교육|연수|역량)",
+        "예비\\s*교사",
+        "teacher education",
+        "pre[ -]?service teacher",
+        "교사.{0,8}(?:역량|전문성)",
+        "교수자.{0,8}역량",
+        "TPACK",
+        "교사\\s*연수"
+      ]
+    },
+    {
+      "id": "assessment",
+      "label": "교육평가·측정",
+      "short": "교육평가",
+      "color": "#597faa",
+      "patterns": [
+        "교육\\s*평가",
+        "학습\\s*평가",
+        "형성\\s*평가",
+        "수행\\s*평가",
+        "동료\\s*평가",
+        "루브릭",
+        "rubric",
+        "formative assessment",
+        "peer assessment",
+        "척도\\s*개발",
+        "타당화",
+        "문항\\s*분석",
+        "자동\\s*채점"
+      ]
+    },
+    {
+      "id": "policy",
+      "label": "교육정보화 정책·제도",
+      "short": "정책·제도",
+      "color": "#7d7752",
+      "patterns": [
+        "교육\\s*정보화",
+        "교육\\s*정책",
+        "디지털\\s*전환",
+        "digital transformation",
+        "교육\\s*격차",
+        "정보\\s*격차",
+        "digital divide",
+        "디지털\\s*교과서",
+        "digital textbook",
+        "교육\\s*정보\\s*서비스"
+      ]
+    }
+  ],
+  "policies": [
+    {
+      "id": "p-ai",
+      "label": "AI 교육 도입",
+      "patterns": [
+        "(?:생성형\\s*(?:AI|인공지능)|인공지능|\\bAI\\b|ChatGPT).{0,24}(?:수업|교육|학습|교수|활용|도입)",
+        "(?:수업|교육|학습).{0,20}(?:생성형|인공지능|ChatGPT)",
+        "(?:\\bAI\\b|artificial intelligence|generative AI).{0,30}(?:education|teaching|learning)"
+      ]
+    },
+    {
+      "id": "p-teacher",
+      "label": "교원 역량",
+      "patterns": [
+        "(?:교사|교원|교수자|예비\\s*교사)(?:의|를\\s*위한|을\\s*위한|\\s)*(?:(?:디지털|AI|인공지능|교육|수업|테크놀로지|미디어|온라인|교수)\\s*){0,3}(?:역량|전문성|연수|리터러시|양성|재교육)",
+        "교사\\s*교육",
+        "교원\\s*양성",
+        "teacher.{0,25}(?:competenc|professional|training|literacy)",
+        "TPACK"
+      ]
+    },
+    {
+      "id": "p-equity",
+      "label": "교육격차·접근성",
+      "patterns": [
+        "교육\\s*격차",
+        "정보\\s*격차",
+        "디지털\\s*격차",
+        "digital divide",
+        "educational equity",
+        "교육\\s*소외",
+        "학습\\s*접근성",
+        "장애\\s*(?:학생|학습자)",
+        "보편적\\s*학습\\s*설계"
+      ]
+    },
+    {
+      "id": "p-personal",
+      "label": "맞춤형 학습",
+      "patterns": [
+        "맞춤형\\s*(?:학습|교육|수업)",
+        "개별화\\s*(?:학습|교육|수업)",
+        "적응형\\s*(?:학습|교육)",
+        "personalized learning",
+        "adaptive learning",
+        "학습자\\s*맞춤"
+      ]
+    },
+    {
+      "id": "p-citizen",
+      "label": "디지털 시민성",
+      "patterns": [
+        "디지털\\s*시민",
+        "digital citizenship",
+        "미디어\\s*리터러시",
+        "media literacy",
+        "디지털\\s*윤리",
+        "정보\\s*윤리",
+        "AI\\s*윤리",
+        "인공지능\\s*윤리",
+        "허위\\s*정보"
+      ]
+    },
+    {
+      "id": "p-transform",
+      "label": "학교·대학 디지털 전환",
+      "patterns": [
+        "(?:학교|대학|교육).{0,20}디지털\\s*전환",
+        "디지털\\s*전환.{0,20}(?:학교|대학|교육)",
+        "디지털\\s*교과서",
+        "교육\\s*정보화",
+        "(?:university|school|education).{0,30}digital transformation"
+      ]
+    }
+  ]
+}
