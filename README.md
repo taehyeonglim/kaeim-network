@@ -2,6 +2,10 @@
 
 교육정보미디어연구의 논문·저자·분야·공저·내부 인용을 탐색하는 공개 테스트 사이트입니다. 원본 메타데이터를 변경하지 않는 정적 React 앱입니다.
 
+공개 사이트: [GitHub Pages](https://taehyeonglim.github.io/kaeim-network/)
+
+저장소: [taehyeonglim/kaeim-network](https://github.com/taehyeonglim/kaeim-network)
+
 ## 실행
 
 Node.js 22 이상, Python 3.10 이상을 사용합니다.
@@ -30,13 +34,20 @@ npm run preview
 
 ## 검증
 
-- `npm test`: 원본 해시 보존, 논문·저자 기록 보존, 독립적인 공저/인용 재계산, 결측값, 분류 근거, 검색·필터·지표 검사.
+- `npm test`: 공개 데이터의 논문·저자 기록, 공저 집계·인용 연결, 분류 근거, 검색·필터·지표 검사. 저장소를 복제한 환경과 GitHub Actions에서 실행할 수 있습니다.
+- `npm run test:source`: 상위 경로에 원본 DB가 있는 환경에서 원본 해시 보존, 원본 대비 논문·저자 기록 보존, 독립적인 인용 매칭, 결측값과 분류 검사를 추가 수행합니다.
 - `node scripts/browser-check.mjs`: 실행 중인 로컬 앱에서 Chromium으로 지도 클릭, 분야·기간 필터, 상세 근거, 비교, 공유, 모바일, embed를 검사합니다. 기본 주소는 `http://127.0.0.1:5173/`이며 `ATLAS_TEST_URL`로 변경할 수 있습니다. 로컬 Chrome이 필요합니다.
 - 브라우저 실행 결과는 `docs/browser-qa.json`, 데이터 생성 결과는 `docs/data-build.json`에 기록합니다. 스크린샷은 상위 `tmp/atlas-qa/`에 저장합니다.
 
 ## 홈페이지 연동
 
 우선 공개 사이트 주소를 메뉴에 연결합니다. 간소화 화면은 `?embed=1`로 열 수 있습니다. JAMS에서 iframe 삽입이 허용되는 경우에만 embed를 사용하고, 실제 호스트의 보안 정책과 모바일 높이를 확인합니다. URL의 해시에는 지도 종류, 기간, 분야, 검색어, 선택 대상이 저장됩니다.
+
+## GitHub Pages 자동 배포
+
+`main`에 푸시하면 `.github/workflows/pages.yml`이 의존성 설치 → 공개 데이터/모델 검사 → Vite 빌드 → Pages 배포를 수행합니다. GitHub의 Settings → Pages에서 배포 소스는 GitHub Actions입니다. 별도 API 키나 원본 DB 없이 저장된 공개 스냅샷으로 빌드합니다.
+
+Vite의 상대 경로(`base: './'`)를 사용하므로 프로젝트 경로 `/kaeim-network/`와 기존 Sites 주소에서 모두 동작합니다. 해시 기반 공유 링크도 같은 경로를 유지합니다. 기존 Sites 배포는 별도로 유지되며 GitHub 푸시가 Sites를 자동 갱신하지는 않습니다.
 
 ## 변경 위치
 
