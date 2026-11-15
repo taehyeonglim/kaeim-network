@@ -12,7 +12,8 @@
     "preview": "vite preview --host 127.0.0.1",
     "data:3d": "node scripts/layout-3d.mjs",
     "data:sna": "tsx scripts/build-sna.ts",
-    "audit:sna": "tsx scripts/audit-sna.ts"
+    "audit:sna": "tsx scripts/audit-sna.ts",
+    "social:image": "node scripts/build-social-image.mjs"
   },
   "dependencies": {
     "d3-force-3d": "^3.0.6",
