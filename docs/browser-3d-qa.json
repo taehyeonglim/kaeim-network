@@ -1,6 +1,6 @@
 {
-  "base": "http://127.0.0.1:5173/",
-  "checkedAt": "2026-11-15T13:14:17.230Z",
+  "base": "http://127.0.0.1:5174/",
+  "checkedAt": "2026-11-15T13:55:53.642Z",
   "scenarios": [
     {
       "name": "2D remains the default and 3D is loaded on demand",

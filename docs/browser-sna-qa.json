@@ -1,0 +1,79 @@
+{
+  "base": "http://127.0.0.1:5174/",
+  "checkedAt": "2026-11-15T13:57:00.391Z",
+  "version": "e76251e3b2115b",
+  "scenarios": [
+    {
+      "name": "exploration remains the default; analysis loads the complete period network",
+      "status": "passed"
+    },
+    {
+      "name": "real 2D node selection opens network metrics",
+      "status": "passed"
+    },
+    {
+      "name": "search and topic highlighting never change analysis totals or selected centralities",
+      "status": "passed"
+    },
+    {
+      "name": "community selection highlights members and keeps the full graph",
+      "status": "passed"
+    },
+    {
+      "name": "cross-community ties lead to their source paper",
+      "status": "passed"
+    },
+    {
+      "name": "analysis options and canonical profile restore through a shared URL",
+      "status": "passed"
+    },
+    {
+      "name": "fractional weighting updates metrics and preserves network identities",
+      "status": "passed"
+    },
+    {
+      "name": "CSV, GEXF and method downloads represent the entire selected period",
+      "status": "passed"
+    },
+    {
+      "name": "uncached period analysis and repositioning stay within the desktop budget",
+      "status": "passed"
+    },
+    {
+      "name": "rapid period changes discard obsolete worker results",
+      "status": "passed"
+    },
+    {
+      "name": "3D consumes the same period graph and restores the analysis view",
+      "status": "passed"
+    },
+    {
+      "name": "empty and edge-free periods remain usable",
+      "status": "passed"
+    },
+    {
+      "name": "worker failure offers retry and a working exploration fallback",
+      "status": "passed"
+    },
+    {
+      "name": "comparison shows a common period and explicit outside-period status",
+      "status": "passed"
+    },
+    {
+      "name": "mobile analysis has no document overflow and supports keyboard selection",
+      "status": "passed"
+    }
+  ],
+  "performance": {
+    "periodAnalysisMs": 146,
+    "periodLayoutMs": 3319
+  },
+  "errors": [],
+  "screenshots": [
+    "/Users/taehyeong/Developer/GitHub/kaeim-network/tmp/atlas-qa/sna/desktop.png",
+    "/Users/taehyeong/Developer/GitHub/kaeim-network/tmp/atlas-qa/sna/community-table.png",
+    "/Users/taehyeong/Developer/GitHub/kaeim-network/tmp/atlas-qa/sna/3d.png",
+    "/Users/taehyeong/Developer/GitHub/kaeim-network/tmp/atlas-qa/sna/mobile.png"
+  ],
+  "status": "passed"
+}

@@ -1,0 +1,97 @@
+{
+  "dataVersion": "e76251e3b2115b",
+  "checkedAt": "2026-11-15T13:50:00.907Z",
+  "interpretation": "Neighborhood preservation compares each nonisolated node with its degree-many nearest geometric neighbors. Distance correlation uses 4000 deterministic pairs in the largest component; it is scale/rotation invariant. These are layout diagnostics, not centrality validity or a convergence guarantee. Seed partition hashes are not membership probabilities.",
+  "variants": [
+    {
+      "weighting": "papers",
+      "variant": "default",
+      "analysisMs": 172,
+      "layoutMs": null,
+      "neighborhood2d": 0.526094800863224,
+      "neighborhood3d": 0.5091505916128467,
+      "distanceCorrelation2d": 1,
+      "distanceCorrelation3d": 1,
+      "communityPartitions": 10,
+      "modularityRange": [
+        0.8774256175093715,
+        0.8804788616036712
+      ]
+    },
+    {
+      "weighting": "papers",
+      "variant": "double-iterations",
+      "analysisMs": 172,
+      "layoutMs": 13311,
+      "neighborhood2d": 0.5413263213950155,
+      "neighborhood3d": 0.5091505916128467,
+      "distanceCorrelation2d": 0.9861867231301062,
+      "distanceCorrelation3d": 0.9999999999942398,
+      "communityPartitions": 10,
+      "modularityRange": [
+        0.8774256175093715,
+        0.8804788616036712
+      ]
+    },
+    {
+      "weighting": "papers",
+      "variant": "different-seed",
+      "analysisMs": 172,
+      "layoutMs": 6555,
+      "neighborhood2d": 0.5319865773868174,
+      "neighborhood3d": 0.5024767960622004,
+      "distanceCorrelation2d": 0.26771354771119216,
+      "distanceCorrelation3d": 0.9921912855115042,
+      "communityPartitions": 10,
+      "modularityRange": [
+        0.8774256175093715,
+        0.8804788616036712
+      ]
+    },
+    {
+      "weighting": "fractional",
+      "variant": "default",
+      "analysisMs": 182,
+      "layoutMs": null,
+      "neighborhood2d": 0.519035685630254,
+      "neighborhood3d": 0.4775616742922415,
+      "distanceCorrelation2d": 1,
+      "distanceCorrelation3d": 1,
+      "communityPartitions": 9,
+      "modularityRange": [
+        0.8922180144055839,
+        0.8938744184510109
+      ]
+    },
+    {
+      "weighting": "fractional",
+      "variant": "double-iterations",
+      "analysisMs": 182,
+      "layoutMs": 13000,
+      "neighborhood2d": 0.5391325015626036,
+      "neighborhood3d": 0.4775616742922415,
+      "distanceCorrelation2d": 0.9564201540599144,
+      "distanceCorrelation3d": 0.9999999999938766,
+      "communityPartitions": 9,
+      "modularityRange": [
+        0.8922180144055839,
+        0.8938744184510109
+      ]
+    },
+    {
+      "weighting": "fractional",
+      "variant": "different-seed",
+      "analysisMs": 182,
+      "layoutMs": 6479,
+      "neighborhood2d": 0.5143953727245753,
+      "neighborhood3d": 0.48420200778989997,
+      "distanceCorrelation2d": 0.42131854973969746,
+      "distanceCorrelation3d": 0.987315933128661,
+      "communityPartitions": 9,
+      "modularityRange": [
+        0.8922180144055839,
+        0.8938744184510109
+      ]
+    }
+  ]
+}

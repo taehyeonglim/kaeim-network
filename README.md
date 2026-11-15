@@ -6,6 +6,20 @@
 
 저장소: [taehyeonglim/kaeim-network](https://github.com/taehyeonglim/kaeim-network)
 
+## 공저 구조 분석
+
+상단 **구조 분석 SNA**를 선택합니다. [구조 분석 바로가기](https://taehyeonglim.github.io/kaeim-network/#experience=analysis)
+
+- 공동연구자 수·연결중심성·연결강도·가중 매개중심성과 협력집단을 제공합니다.
+- 분석은 선택 기간 전체망 기준이며 분야·검색은 강조만 바꿉니다.
+- 점 크기, 분야/협력집단 색상, 논문 수/공동저자 수 보정 가중치, 전체 기간 고정/기간 재배치를 선택합니다.
+- 2D·3D·표·비교·집단 간 공동 논문 근거와 CSV/GEXF/계산 기준 JSON을 제공합니다.
+- 현재 탐색 화면이 기본이며, 기존 프로필 링크·동일인 판단·보류 상태는 유지됩니다.
+
+계산식과 한계는 [SNA 해석 기준](docs/SNA-METHODOLOGY.md), 초기조건·반복 횟수 검사는 [민감도 보고서](docs/sna-audit.json)에 있습니다. 중심성은 전문성이나 학회 내 우열 점수가 아닙니다.
+
+`npm run data:sna`는 공개 스냅샷으로 전체 기간의 두 가중치 분석과 2D·3D 배치를 생성합니다. `npm run data`에 포함되며, `npm test`가 버전·집계·독립 중심성 검증을 수행합니다. `npm run audit:sna`는 배치 민감도를 별도로 검사합니다. `node scripts/browser-sna-check.mjs`는 실행 중인 앱의 구조 분석·필터·Worker 취소/실패·다운로드·모바일을 검사하고 `docs/browser-sna-qa.json`에 결과를 저장합니다.
+
 ## 3D 탐색
 
 지도 상단의 **3D** 버튼으로 입체 보기를 엽니다. [입체 네트워크 바로가기](https://taehyeonglim.github.io/kaeim-network/#dim=3d) · [연구분야 성단 바로가기](https://taehyeonglim.github.io/kaeim-network/#dim=3d&view=topics)
