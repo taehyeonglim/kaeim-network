@@ -5,25 +5,30 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "data": "python3 scripts/build_data.py && node scripts/layout.mjs",
-    "test": "node --test scripts/public-data.test.mjs && tsx --test src/model.test.ts",
+    "data": "python3 scripts/build_data.py && node scripts/layout.mjs && node scripts/layout-3d.mjs",
+    "test": "node --test scripts/public-data.test.mjs && tsx --test src/model.test.ts src/graph3d.test.ts",
     "test:source": "python3 scripts/test_data.py",
     "build": "tsc -b && vite build",
-    "preview": "vite preview --host 127.0.0.1"
+    "preview": "vite preview --host 127.0.0.1",
+    "data:3d": "node scripts/layout-3d.mjs"
   },
   "dependencies": {
+    "d3-force-3d": "^3.0.6",
     "graphology": "^0.26.0",
     "graphology-layout-forceatlas2": "^0.10.1",
     "lucide-react": "^0.468.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "sigma": "^3.0.2"
+    "react-force-graph-3d": "^1.29.2",
+    "sigma": "^3.0.2",
+    "three": "^0.187.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.65.1",
     "@types/node": "^22.10.0",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
+    "@types/three": "^0.187.0",
     "@vitejs/plugin-react": "^4.3.4",
     "tsx": "^4.19.2",
     "typescript": "~5.7.2",

@@ -30,8 +30,8 @@ export function researcherStats(r:Researcher,papers:Paper[],a:Atlas){
  const outgoing=a.citations.filter(e=>ownIds.has(e.source));
  return {papers:own,coauthors,topics,kci:known.reduce((s,p)=>s+p.kciCitations!,0),kciKnown:known.length,incoming,outgoing,latest:Math.max(0,...own.map(p=>p.year))};
 }
-export function readState(a:Atlas){
- const p=new URLSearchParams(window.location.hash.slice(1));
+export function readState(a:Atlas,hash=window.location.hash){
+ const p=new URLSearchParams(hash.slice(1));
  const clamp=(n:number)=>Math.min(a.meta.maxYear,Math.max(a.meta.minYear,n));
  const getYear=(key:string,def:number)=>p.has(key)&&Number.isFinite(Number(p.get(key)))?clamp(Number(p.get(key))):def;
  const from=getYear('from',a.meta.minYear),to=getYear('to',a.meta.maxYear);
@@ -40,5 +40,6 @@ export function readState(a:Atlas){
  const mode=(['coauthor','topics','citations'].includes(p.get('view')||'')?p.get('view'):'coauthor') as 'coauthor'|'topics'|'citations';
  const id=p.get('id');const type=p.get('type');
  const selection=id&&((type==='researcher'&&a.researchers.some(r=>r.id===id))||(type==='paper'&&a.articles.some(r=>r.id===id)))?{id,type:type as 'researcher'|'paper'}:null;
- return {filters:{from:Math.min(from,to),to:Math.max(from,to),topic,policy,q:p.get('q')||''},mode,selection};
+ const dimension:'2d'|'3d'=p.get('dim')==='3d'?'3d':'2d';
+ return {dimension,filters:{from:Math.min(from,to),to:Math.max(from,to),topic,policy,q:p.get('q')||''},mode,selection};
 }

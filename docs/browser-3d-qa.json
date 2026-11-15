@@ -1,0 +1,51 @@
+{
+  "base": "http://127.0.0.1:5173/",
+  "checkedAt": "2026-11-15T02:41:10.973Z",
+  "scenarios": [
+    {
+      "name": "2D remains the default and 3D is loaded on demand",
+      "status": "passed"
+    },
+    {
+      "name": "actual 3D sphere click opens a researcher profile",
+      "status": "passed"
+    },
+    {
+      "name": "2D and list switches retain selection and filters",
+      "status": "passed"
+    },
+    {
+      "name": "topic constellations rotate and zoom without changing data",
+      "status": "passed"
+    },
+    {
+      "name": "topic anchor selection filters the constellation and is shareable",
+      "status": "passed"
+    },
+    {
+      "name": "3D citations retain contextual papers and visible missing-reference coverage",
+      "status": "passed"
+    },
+    {
+      "name": "empty 3D results and repeated dimensional switches stay stable",
+      "status": "passed"
+    },
+    {
+      "name": "mobile 3D is responsive and respects reduced-motion preference",
+      "status": "passed"
+    },
+    {
+      "name": "failed 3D layout fetch offers a working 2D fallback",
+      "status": "passed"
+    }
+  ],
+  "errors": [],
+  "screenshots": [
+    "/Users/taehyeong/Developer/GitHub/kaeim-network/tmp/atlas-qa/3d/coauthors.png",
+    "/Users/taehyeong/Developer/GitHub/kaeim-network/tmp/atlas-qa/3d/selected-researcher.png",
+    "/Users/taehyeong/Developer/GitHub/kaeim-network/tmp/atlas-qa/3d/constellations.png",
+    "/Users/taehyeong/Developer/GitHub/kaeim-network/tmp/atlas-qa/3d/citations.png",
+    "/Users/taehyeong/Developer/GitHub/kaeim-network/tmp/atlas-qa/3d/mobile.png"
+  ],
+  "status": "passed"
+}
