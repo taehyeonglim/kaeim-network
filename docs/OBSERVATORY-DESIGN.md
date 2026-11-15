@@ -33,3 +33,5 @@
 ## 출처와 배포
 
 공식 로고 및 참고 포스터 출처는 [브랜드 자산 기록](../public/brand/README.md)에 있습니다. 기존 `main` → GitHub Actions → GitHub Pages 배포 경로를 사용합니다. 기존 Sites 식별자는 변경하지 않습니다.
+
+공개 GitHub Pages에서도 관측소 12개 시나리오를 통과했습니다. [배포 주소 검사 결과](browser-observatory-live-qa.json). 반응형 패널의 모달 전환 검사는 미디어 쿼리 이벤트 처리 완료를 기다린 후 판정합니다.
