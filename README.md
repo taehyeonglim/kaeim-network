@@ -6,6 +6,16 @@
 
 저장소: [taehyeonglim/kaeim-network](https://github.com/taehyeonglim/kaeim-network)
 
+## 몰입형 지식 관측소
+
+2026 추계공동학술대회 포스터의 남색·청색 빛과 공식 학회 로고를 반영한 전체 화면 지도입니다. [디자인·검증 기록](docs/OBSERVATORY-DESIGN.md)
+
+- 상단 검색, 하단 보기 전환, 필요할 때 여는 탐색 조건·상세·분석 도구를 제공합니다.
+- 데스크톱 새 방문은 탐색 3D, 구조 분석 2D로 시작합니다. 모바일과 embed의 첫 보기는 2D입니다.
+- 기존 링크는 이전처럼 해석하며 새 링크에는 `dim=2d` 또는 `dim=3d`를 명시합니다. 화면별 차원 선택은 앱을 사용하는 동안 기억합니다.
+- 모바일 패널은 하나의 하단 시트로 열리며 키보드 초점 순환·복귀와 동작 감소 설정을 지원합니다.
+- 공식 로고 원본 및 출처는 [브랜드 자산 기록](public/brand/README.md)에 보관합니다.
+
 ## 공저 구조 분석
 
 상단 **구조 분석 SNA**를 선택합니다. [구조 분석 바로가기](https://taehyeonglim.github.io/kaeim-network/#experience=analysis)
@@ -22,13 +32,13 @@
 
 ## 3D 탐색
 
-지도 상단의 **3D** 버튼으로 입체 보기를 엽니다. [입체 네트워크 바로가기](https://taehyeonglim.github.io/kaeim-network/#dim=3d) · [연구분야 성단 바로가기](https://taehyeonglim.github.io/kaeim-network/#dim=3d&view=topics)
+지도 하단의 **3D** 버튼으로 입체 보기를 엽니다. [입체 네트워크 바로가기](https://taehyeonglim.github.io/kaeim-network/#dim=3d) · [연구분야 성단 바로가기](https://taehyeonglim.github.io/kaeim-network/#dim=3d&view=topics)
 
 - 공저·인용 관계의 3D 배치와 연구분야별 입체 성단을 제공합니다.
 - 드래그로 회전, 스크롤·핀치로 확대하고, 점을 선택하면 카메라가 이동하며 기존 상세 패널이 열립니다.
 - 이름은 선택·호버하거나 가까이 접근했을 때 제한된 수만 표시합니다. 선택 시 주변 연결을 강조합니다.
 - 검색·기간·분야 필터와 선택 상태는 2D/3D/목록 사이에서 유지됩니다. 공유 URL의 `dim=3d`도 복원됩니다.
-- 기본 보기는 2D입니다. 3D 코드와 좌표는 필요할 때 불러오며, 실패 시 2D로 돌아갈 수 있습니다. 동작 줄이기 설정에서는 카메라 전환을 즉시 적용합니다.
+- 데스크톱 새 방문의 탐색은 3D이며, 모바일·embed·기존 차원 미지정 링크는 2D입니다. 3D 코드와 좌표는 해당 보기에서만 불러오며, 실패 시 2D로 돌아갈 수 있습니다. 동작 줄이기 설정에서는 카메라 전환을 즉시 적용합니다.
 
 `npm run data:3d`는 저장된 공개 스냅샷에서 입체 좌표만 다시 계산합니다. `npm run data`는 전체 공개 데이터와 2D·3D 좌표를 생성합니다. 좌표는 원본 데이터와 별도인 `public/data/layout-3d.json`에 저장하며 데이터 버전이 다르면 사용하지 않습니다.
 
@@ -65,6 +75,7 @@ npm run preview
 - `node scripts/browser-check.mjs`: 실행 중인 로컬 앱에서 Chromium으로 지도 클릭, 분야·기간 필터, 상세 근거, 비교, 공유, 모바일, embed를 검사합니다. 기본 주소는 `http://127.0.0.1:5173/`이며 `ATLAS_TEST_URL`로 변경할 수 있습니다. 로컬 Chrome이 필요합니다.
 - `node scripts/browser-3d-check.mjs`: 3D 점 선택·카메라 초점·회전·확대·분야 성단·공유·모바일·실패 시 2D 전환을 검사합니다. 결과는 `docs/browser-3d-qa.json`에 저장합니다.
 - `node scripts/browser-identity-check.mjs`: 통합 프로필·기존 링크·확인된 동명이인·보류·이름 및 소속 교정·모바일 검사를 수행합니다. 결과는 `docs/browser-identity-qa.json`에 저장합니다.
+- `node scripts/browser-observatory-check.mjs`: 기기별 기본 보기, 모드별 차원 기억, 공유 호환, 패널 크기·초점·스크롤·리사이즈, 모바일·태블릿·짧은 데스크톱 화면과 대비를 검사합니다. 결과는 `docs/browser-observatory-qa.json`에 저장합니다.
 - 브라우저 실행 결과는 `docs/browser-qa.json`, 데이터 생성 결과는 `docs/data-build.json`에 기록합니다. 스크린샷은 상위 `tmp/atlas-qa/`에 저장합니다.
 
 ## 홈페이지 연동

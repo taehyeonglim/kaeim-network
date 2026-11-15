@@ -1,0 +1,70 @@
+{
+  "base": "http://127.0.0.1:5173/",
+  "checkedAt": "2026-11-15T14:25:14.461Z",
+  "version": "e76251e3b2115b",
+  "scenarios": [
+    {
+      "name": "new desktop visit opens real 3D graph with the official local logo",
+      "status": "passed"
+    },
+    {
+      "name": "each experience remembers its dimension while analysis initially opens in 2D",
+      "status": "passed"
+    },
+    {
+      "name": "legacy URLs preserve 2D and explicit 3D links restore 3D",
+      "status": "passed"
+    },
+    {
+      "name": "desktop filters scroll inside a bounded panel and return keyboard focus",
+      "status": "passed"
+    },
+    {
+      "name": "closing details keeps selection and reopening preserves its evidence",
+      "status": "passed"
+    },
+    {
+      "name": "skip navigation focuses the workspace without destroying shared state",
+      "status": "passed"
+    },
+    {
+      "name": "zero search results can be recovered from the persistent search",
+      "status": "passed"
+    },
+    {
+      "name": "mobile starts in 2D and opens only one modal bottom sheet",
+      "status": "passed"
+    },
+    {
+      "name": "resizing an open sheet preserves state and changes modality safely",
+      "status": "passed"
+    },
+    {
+      "name": "mobile analysis, tablet and short desktop controls remain reachable",
+      "status": "passed"
+    },
+    {
+      "name": "embedded atlas keeps compact controls and 2D as its first view",
+      "status": "passed"
+    },
+    {
+      "name": "reduced motion disables drawer animation and theme has readable base contrast",
+      "status": "passed"
+    }
+  ],
+  "errors": [],
+  "screenshots": [
+    "/Users/taehyeong/Developer/GitHub/kaeim-network/tmp/atlas-qa/observatory/desktop.png",
+    "/Users/taehyeong/Developer/GitHub/kaeim-network/tmp/atlas-qa/observatory/filters.png",
+    "/Users/taehyeong/Developer/GitHub/kaeim-network/tmp/atlas-qa/observatory/researcher.png",
+    "/Users/taehyeong/Developer/GitHub/kaeim-network/tmp/atlas-qa/observatory/paper.png",
+    "/Users/taehyeong/Developer/GitHub/kaeim-network/tmp/atlas-qa/observatory/mobile.png",
+    "/Users/taehyeong/Developer/GitHub/kaeim-network/tmp/atlas-qa/observatory/mobile-filters.png",
+    "/Users/taehyeong/Developer/GitHub/kaeim-network/tmp/atlas-qa/observatory/mobile-researcher.png",
+    "/Users/taehyeong/Developer/GitHub/kaeim-network/tmp/atlas-qa/observatory/mobile-analysis.png",
+    "/Users/taehyeong/Developer/GitHub/kaeim-network/tmp/atlas-qa/observatory/tablet-analysis.png",
+    "/Users/taehyeong/Developer/GitHub/kaeim-network/tmp/atlas-qa/observatory/compact-analysis.png",
+    "/Users/taehyeong/Developer/GitHub/kaeim-network/tmp/atlas-qa/observatory/embed.png"
+  ],
+  "status": "passed"
+}

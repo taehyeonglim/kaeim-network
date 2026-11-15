@@ -1,5 +1,7 @@
 import {useEffect,useRef,useState} from 'react';
 import Graph from 'graphology';
+import {observeGraphViewport,viewportScale} from './graphViewport';
+import {displayColor,graphTheme,drawGraphLabel,drawGraphHover} from './theme';
 import Sigma from 'sigma';
 import {ZoomIn,ZoomOut,Maximize2} from 'lucide-react';
 import type {Atlas,Paper,Mode,Selection} from './types';
@@ -12,20 +14,20 @@ export function Network({atlas,papers,mode,selection,onSelect,onTopic,onFallback
  useEffect(()=>{
   if(!ref.current)return;setError('');
   const graph=new Graph({type:mode==='citations'?'directed':'undirected',multi:false,allowSelfLoops:true});
-  const visualScale=ref.current.clientWidth<500?.65:1;
+  const visualScale=viewportScale(ref.current);
   const c=connections(atlas,papers);const topics=atlas.taxonomy.topics;
   const paperMap=new Map(atlas.articles.map(p=>[p.id,p]));const rs=new Map(atlas.researchers.map(r=>[r.id,r]));
   const tc=new Map<string,Map<string,number>>();const counts=new Map<string,number>();
   papers.forEach(p=>p.authors.forEach(id=>{counts.set(id,(counts.get(id)||0)+1);if(!tc.has(id))tc.set(id,new Map());p.topics.forEach(t=>tc.get(id)!.set(t,(tc.get(id)!.get(t)||0)+1));}));
   const dominant=(id:string)=>[...(tc.get(id)||new Map<string,number>())].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]))[0]?.[0];
-  const color=(id:string)=>topics.find(t=>t.id===id)?.color||'#8393a4';
+  const color=(id:string)=>displayColor(topics.find(t=>t.id===id)?.color);
   if(mode==='citations'){
    const visible=new Set([...papers.map(p=>p.id),...c.citations.map(e=>e.target)]);
    const incoming=new Map<string,number>();c.citations.forEach(e=>incoming.set(e.target,(incoming.get(e.target)||0)+1));
-   visible.forEach(id=>{const p=paperMap.get(id)!;const pos=atlas.positions.citations[id];graph.addNode(id,{x:pos[0],y:pos[1],label:p.title,size:(3+Math.sqrt(incoming.get(id)||0)*1.6)*visualScale,color:c.ids.has(id)?color(p.topics[0]):'#b8c3ce',kind:'paper',context:!c.ids.has(id),zIndex:0});});
-   c.citations.forEach((e,i)=>graph.addEdgeWithKey('e'+i,e.source,e.target,{size:0.6,color:'#c6d3df',type:'arrow'}));
+   visible.forEach(id=>{const p=paperMap.get(id)!;const pos=atlas.positions.citations[id];graph.addNode(id,{x:pos[0],y:pos[1],label:p.title,size:(3+Math.sqrt(incoming.get(id)||0)*1.6)*visualScale,color:c.ids.has(id)?color(p.topics[0]):graphTheme.context,kind:'paper',context:!c.ids.has(id),zIndex:0});});
+   c.citations.forEach((e,i)=>graph.addEdgeWithKey('e'+i,e.source,e.target,{size:0.6,color:graphTheme.edge,type:'arrow'}));
   }else{
-   if(mode==='topics')topics.forEach((t,i)=>{const angle=i/topics.length*2*Math.PI;graph.addNode(t.id,{x:Math.cos(angle)*100,y:Math.sin(angle)*100,label:t.short||t.label,size:15*visualScale,color:t.color,kind:'topic',forceLabel:true,zIndex:5});});
+   if(mode==='topics')topics.forEach((t,i)=>{const angle=i/topics.length*2*Math.PI;graph.addNode(t.id,{x:Math.cos(angle)*100,y:Math.sin(angle)*100,label:t.short||t.label,size:15*visualScale,color:displayColor(t.color),kind:'topic',forceLabel:true,zIndex:5});});
    let i=0;
    c.researchers.forEach(id=>{
     const r=rs.get(id)!;const topic=dominant(id);let pos=atlas.positions.authors[id];
@@ -35,26 +37,27 @@ export function Network({atlas,papers,mode,selection,onSelect,onTopic,onFallback
      pos=ti<0?[Math.cos(ra)*28,Math.sin(ra)*28]:[Math.cos(a)*100+Math.cos(ra)*radius,Math.sin(a)*100+Math.sin(ra)*radius];
     }
     graph.addNode(id,{x:pos[0],y:pos[1],label:r.name,size:(3+Math.sqrt(counts.get(id)||1)*1.6)*visualScale,color:color(topic),kind:'researcher',zIndex:1});
-    if(mode==='topics')for(const [t,n] of tc.get(id)||[])graph.addEdgeWithKey('t'+i++,id,t,{size:Math.min(1.8,.3+Math.sqrt(n)*.2),color:'#d9e1e9'});
+    if(mode==='topics')for(const [t,n] of tc.get(id)||[])graph.addEdgeWithKey('t'+i++,id,t,{size:Math.min(1.8,.3+Math.sqrt(n)*.2),color:graphTheme.edge});
    });
-   if(mode==='coauthor')c.coauthors.forEach((e,i)=>graph.addEdgeWithKey('e'+i,e.source,e.target,{size:Math.min(3,.35+Math.sqrt(e.articles.length)*.3),color:e.articles.length>2?'#aabfce':'#d3dfe8'}));
+   if(mode==='coauthor')c.coauthors.forEach((e,i)=>graph.addEdgeWithKey('e'+i,e.source,e.target,{size:Math.min(3,.35+Math.sqrt(e.articles.length)*.3),color:e.articles.length>2?graphTheme.strongEdge:graphTheme.edge}));
   }
   setStats({nodes:graph.order,edges:graph.size,context:graph.filterNodes((_,a)=>a.context).length});
   let sigma:Sigma;
   try{
-   sigma=new Sigma(graph,ref.current,{renderEdgeLabels:false,labelFont:'system-ui, sans-serif',labelSize:12,labelWeight:'500',labelColor:{color:'#273d52'},labelDensity:.12,labelGridCellSize:100,labelRenderedSizeThreshold:8*visualScale,defaultEdgeType:mode==='citations'?'arrow':'line',zIndex:true,minCameraRatio:.03,maxCameraRatio:8,allowInvalidContainer:true});
+   sigma=new Sigma(graph,ref.current,{defaultDrawNodeLabel:drawGraphLabel,defaultDrawNodeHover:drawGraphHover,renderEdgeLabels:false,labelFont:'system-ui, sans-serif',labelSize:12,labelWeight:'500',labelColor:{color:graphTheme.label},labelDensity:.12,labelGridCellSize:100,labelRenderedSizeThreshold:8*visualScale,defaultEdgeType:mode==='citations'?'arrow':'line',zIndex:true,minCameraRatio:.03,maxCameraRatio:8,allowInvalidContainer:true});
    renderer.current=sigma;
+   const disconnectResize=observeGraphViewport(ref.current,graph,sigma,visualScale);
    sigma.on('clickNode',({node})=>{const kind=graph.getNodeAttribute(node,'kind');if(kind==='topic')callbacks.current.onTopic(node);else callbacks.current.onSelect({id:node,type:kind});});
    sigma.on('clickStage',()=>callbacks.current.onSelect(null));
    let hovered:string|null=null;
    const update=()=>{const selected=ref.current?.dataset.selected;const active=hovered||(selected&&graph.hasNode(selected)?selected:null);const neighbors=active?new Set(graph.neighbors(active)):new Set<string>();
-    sigma.setSetting('nodeReducer',(id,data)=>active?{...data,color:id===active||neighbors.has(id)?data.color:'#e2e8ee',forceLabel:id===active||neighbors.has(id),zIndex:id===active?10:neighbors.has(id)?5:0}:data);
-    sigma.setSetting('edgeReducer',(id,data)=>active?{...data,hidden:!graph.hasExtremity(id,active),color:'#7994ad',size:1.3}:data);
+    sigma.setSetting('nodeReducer',(id,data)=>active?{...data,label:id===active||neighbors.has(id)?data.label:'',color:id===active||neighbors.has(id)?data.color:graphTheme.muted,forceLabel:id===active||neighbors.has(id),highlighted:id===active,zIndex:id===active?10:neighbors.has(id)?5:0}:data);
+    sigma.setSetting('edgeReducer',(id,data)=>active?{...data,hidden:!graph.hasExtremity(id,active),color:graphTheme.selectedEdge,size:1.3}:data);
    };
    sigma.on('enterNode',({node})=>{hovered=node;update();if(ref.current)ref.current.style.cursor='pointer';});
    sigma.on('leaveNode',()=>{hovered=null;update();if(ref.current)ref.current.style.cursor='grab';});
    const observer=new MutationObserver(update);observer.observe(ref.current,{attributes:true,attributeFilter:['data-selected']});update();
-   return()=>{observer.disconnect();sigma.kill();renderer.current=null;};
+   return()=>{disconnectResize();observer.disconnect();sigma.kill();renderer.current=null;};
   }catch(e){setError('이 환경에서는 지도를 표시할 수 없습니다. 같은 데이터를 목록으로 탐색할 수 있습니다.');renderer.current?.kill();renderer.current=null;}
  },[atlas,papers,mode]);
  return <div className="network-wrap">

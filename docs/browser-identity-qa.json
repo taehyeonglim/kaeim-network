@@ -1,7 +1,7 @@
 {
-  "base": "http://127.0.0.1:5174/",
+  "base": "http://127.0.0.1:5173/",
   "version": "e76251e3b2115b",
-  "checkedAt": "2026-11-15T13:55:53.639Z",
+  "checkedAt": "2026-11-15T14:19:43.775Z",
   "scenarios": [
     {
       "name": "deployed snapshot matches the reviewed version",

@@ -1,6 +1,6 @@
 {
-  "base": "http://127.0.0.1:5174/",
-  "checkedAt": "2026-11-15T13:57:00.391Z",
+  "base": "http://127.0.0.1:5173/",
+  "checkedAt": "2026-11-15T14:25:15.661Z",
   "version": "e76251e3b2115b",
   "scenarios": [
     {
@@ -65,8 +65,8 @@
     }
   ],
   "performance": {
-    "periodAnalysisMs": 146,
-    "periodLayoutMs": 3319
+    "periodAnalysisMs": 193,
+    "periodLayoutMs": 3453
   },
   "errors": [],
   "screenshots": [

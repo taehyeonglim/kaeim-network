@@ -21,7 +21,7 @@ try{
   const d=decision('임태형');await profile(d.existingGroupIds[1]);assert.equal(await page.locator('.profile-heading h2').textContent(),'임태형');assert.equal(await page.locator('.profile-metrics strong').first().textContent(),'8');await page.getByText('사용자 확인 연구자 묶음',{exact:true}).waitFor();assert.ok(page.url().includes(d.existingGroupIds[0]));
  });
  await check('confirmed namesakes show explicit separation and distinct current affiliations',async()=>{
-  await profile(decision('신소영').existingGroupIds[0]);await page.locator('.current-affiliation').getByText('연세대학교 강사',{exact:true}).waitFor();await page.locator('.current-affiliation').getByText('서강대학교 대우교수',{exact:true}).waitFor();await page.getByText('같은 이름의 다른 묶음',{exact:true}).click();await page.getByText('다른 사람으로 확인',{exact:true}).waitFor();await page.screenshot({path:new URL('confirmed.png',output).pathname,fullPage:true});
+  await profile(decision('신소영').existingGroupIds[0]);await page.locator('.current-affiliation').getByText('연세대학교 강사',{exact:true}).waitFor();await page.locator('.current-affiliation').getByText('서강대학교 대우교수',{exact:true}).waitFor();await page.getByText('같은 이름의 다른 묶음',{exact:true}).click();await page.getByText('다른 사람으로 확인',{exact:true}).waitFor();await page.waitForTimeout(220);await page.screenshot({path:new URL('confirmed.png',output).pathname,fullPage:true});
  });
  await check('deferred identity stays pending and is not labelled a confirmed different person',async()=>{
   await profile(decision('이정민').deferredGroupIds[0]);await page.locator('.identity-note').getByText(/동일인 판단 보류/).waitFor();await page.getByText('같은 이름의 다른 묶음',{exact:true}).click();assert.ok(await page.getByText('동일인 여부 미확인',{exact:true}).count()>0);assert.equal(await page.getByText('다른 사람으로 확인',{exact:true}).count(),0);
@@ -36,7 +36,7 @@ try{
   await page.goto(base+'#q=임병로');await page.getByRole('button',{name:'목록 보기',exact:true}).click();await page.locator('.researcher-row').filter({has:page.getByText('임병노',{exact:true})}).waitFor();assert.equal(await page.locator('.researcher-row').filter({has:page.getByText('임병로',{exact:true})}).count(),0);
  });
  await check('mobile reviewed profile fits without horizontal scrolling',async()=>{
-  await page.setViewportSize({width:390,height:844});await profile(decision('신소영').existingGroupIds[0]);await page.locator('.current-affiliation').waitFor();assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await page.screenshot({path:new URL('mobile.png',output).pathname,fullPage:true});
+  await page.setViewportSize({width:390,height:844});await profile(decision('신소영').existingGroupIds[0]);await page.locator('.current-affiliation').waitFor();assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await page.waitForTimeout(220);await page.screenshot({path:new URL('mobile.png',output).pathname,fullPage:true});
  });
  assert.deepEqual(report.errors,[]);report.status='passed';
 }catch(e){report.status='failed';report.failure=String(e);console.error(e);process.exitCode=1;}
