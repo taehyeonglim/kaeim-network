@@ -44,3 +44,42 @@ test('citation graph joins existing papers without duplicate directed links',()=
  assert.equal(keys.size,atlas.citations.length);assert.equal(keys.size,atlas.meta.internalEdges);
  for(const p of papers.values())assert.equal(p.internalCitations,incoming.get(p.id)||0);
 });
+
+test('all human identity decisions, pending groups and old links survive publication',()=>{
+ const review=JSON.parse(fs.readFileSync(new URL('../config/identity-review.json',import.meta.url),'utf8'));
+ const resolve=id=>atlas.researcherRedirects[id]||id;
+ const owner=new Map(atlas.researchers.flatMap(r=>r.occurrences.map(o=>[o,r.id])));
+ const authorized=new Set();
+ for(const d of review.decisions){
+  assert.equal(d.applied,true,d.name);
+  for(const part of d.mergeGroups||[d]){
+   const ids=part.existingGroupIds;if(!ids.length)continue;
+   const target=resolve(ids[0]);
+   assert.equal(researchers.get(target).identityStatus,'reviewed');
+   for(const id of ids){assert.equal(resolve(id),target,d.name);if(id!==target)authorized.add(id);}
+   assert.deepEqual(new Set(researchers.get(target).occurrences),new Set(part.occurrenceIds),d.name);
+   for(const oid of part.occurrenceIds)assert.equal(owner.get(oid),target,d.name);
+  }
+  for(const id of d.deferredGroupIds||[]){assert.equal(resolve(id),id,d.name);assert.equal(researchers.get(id).identityStatus,'pending');}
+  for(const pair of d.cannotLink||[]){const l=resolve(pair.left),r=resolve(pair.right);assert.notEqual(l,r,d.name);assert.ok(researchers.get(l).distinctFromIds.includes(r));assert.ok(researchers.get(r).distinctFromIds.includes(l));}
+  if(d.decision==='correct_name_and_link')for(const id of d.sourceGroupIds)assert.equal(researchers.get(resolve(id)).name,d.canonicalName);
+ }
+ assert.deepEqual(new Set(Object.keys(atlas.researcherRedirects)),authorized);
+ for(const [old,id] of Object.entries(atlas.researcherRedirects)){assert.ok(!researchers.has(old));assert.ok(researchers.has(id));assert.ok(!atlas.researcherRedirects[id]);}
+ assert.equal(atlas.meta.researcherGroups,1324);
+ assert.equal(atlas.researchers.filter(r=>r.identityStatus==='pending').length,81);
+});
+
+test('name and affiliation corrections are scoped and retain their original spelling',()=>{
+ const corrected=atlas.researchers.find(r=>r.name==='임병노');
+ assert.ok(corrected.nameAliases.includes('임병로'));assert.equal(corrected.occurrences.length,10);
+ assert.equal(atlas.researchers.filter(r=>r.name==='임병로').length,0);
+ for(const [name,from,to] of [['강명희','이화여자대학고','이화여자대학교'],['임현진','이회여자대학교','이화여자대학교'],['정옥년','카톨릭대','가톨릭대학교']]){
+  const r=atlas.researchers.find(r=>r.name===name);assert.ok(r.institutions.includes(to));assert.ok(!r.institutions.includes(from));
+  const rows=r.articles.flatMap(id=>JSON.parse(fs.readFileSync(new URL(`articles/${id.replace(':','_')}.json`,root),'utf8')).authorsDetail).filter(a=>a.id===r.id&&a.originalInstitution===from);
+  assert.ok(rows.length);assert.ok(rows.every(a=>a.institution===to));
+ }
+ const shin=atlas.researchers.filter(r=>r.name==='신소영');assert.equal(shin.length,2);
+ assert.deepEqual(shin.map(r=>r.currentAffiliations.length).sort(),[1,2]);
+ for(const r of shin)assert.ok(r.currentAffiliations.every(c=>c.source==='user_confirmation'));
+});

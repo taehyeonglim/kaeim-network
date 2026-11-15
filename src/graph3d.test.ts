@@ -17,7 +17,7 @@ test('3D layout covers all source nodes and has genuine depth',()=>{
 });
 test('3D coauthor graph preserves research identities, edges and weights',()=>{
  const before=JSON.stringify(a);const g=buildSpaceGraph(a,a.articles,'coauthor',layout);
- assert.equal(g.nodes.length,1679);assert.equal(g.links.length,2639);
+ assert.equal(g.nodes.length,a.researchers.length);assert.equal(g.links.length,a.coauthors.length);
  assert.deepEqual(g.links.map(e=>[endpoint(e.source),endpoint(e.target),e.weight]),a.coauthors.map(e=>[e.source,e.target,e.articles.length]));
  assert.equal(JSON.stringify(a),before);
 });

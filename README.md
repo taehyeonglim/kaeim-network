@@ -40,9 +40,9 @@ npm run build
 npm run preview
 ```
 
-별도 위치의 원본은 `python3 scripts/build_data.py --source /absolute/path/to/curated`로 지정한 뒤 `node scripts/layout.mjs`를 실행합니다. 빌더는 원본에 쓰지 않습니다. 원본 갱신 시 빌더의 수집 기준일과 데이터 테스트의 고정 스냅샷 해시·개수도 실제 근거에 맞춰 갱신해야 합니다.
+별도 위치의 원본은 `python3 scripts/build_data.py --source /absolute/path/to/curated`로 지정한 뒤 `node scripts/layout.mjs`와 `node scripts/layout-3d.mjs`를 실행합니다. 빌더는 원본에 쓰지 않습니다. 원본 갱신 시 빌더의 수집 기준일과 데이터 테스트의 고정 스냅샷 해시·개수도 실제 근거에 맞춰 갱신해야 합니다.
 
-정적 산출물은 `dist/`이며, Sites 배포 식별자는 `.openai/hosting.json`에 저장합니다. 같은 사이트를 수정할 때 새 사이트를 만들지 않습니다. 배포는 Sites 스킬의 소스 동기화·아카이브 저장·공개 배포 절차를 사용합니다.
+정적 산출물은 `dist/`이며, 현재 배포 대상은 위의 GitHub Pages 사이트입니다. `main`에 푸시하면 검증과 배포가 자동 실행됩니다.
 
 ## 검증
 
@@ -50,6 +50,7 @@ npm run preview
 - `npm run test:source`: 상위 경로에 원본 DB가 있는 환경에서 원본 해시 보존, 원본 대비 논문·저자 기록 보존, 독립적인 인용 매칭, 결측값과 분류 검사를 추가 수행합니다.
 - `node scripts/browser-check.mjs`: 실행 중인 로컬 앱에서 Chromium으로 지도 클릭, 분야·기간 필터, 상세 근거, 비교, 공유, 모바일, embed를 검사합니다. 기본 주소는 `http://127.0.0.1:5173/`이며 `ATLAS_TEST_URL`로 변경할 수 있습니다. 로컬 Chrome이 필요합니다.
 - `node scripts/browser-3d-check.mjs`: 3D 점 선택·카메라 초점·회전·확대·분야 성단·공유·모바일·실패 시 2D 전환을 검사합니다. 결과는 `docs/browser-3d-qa.json`에 저장합니다.
+- `node scripts/browser-identity-check.mjs`: 통합 프로필·기존 링크·확인된 동명이인·보류·이름 및 소속 교정·모바일 검사를 수행합니다. 결과는 `docs/browser-identity-qa.json`에 저장합니다.
 - 브라우저 실행 결과는 `docs/browser-qa.json`, 데이터 생성 결과는 `docs/data-build.json`에 기록합니다. 스크린샷은 상위 `tmp/atlas-qa/`에 저장합니다.
 
 ## 홈페이지 연동
@@ -65,9 +66,11 @@ Vite의 상대 경로(`base: './'`)를 사용하므로 프로젝트 경로 `/kae
 ## 변경 위치
 
 - `config/taxonomy.json`: 학술 분야·정책 과제, 색상, 근거 탐지 규칙.
+- `config/identity-review.json`: 사용자 확인 통합·분리·보류 및 표기 교정 이력. 현재 295개 이름 반영, 33개 이름 판단 보류.
+- `scripts/identity_review.py`: 검토 기록 적용 및 충돌 검사. 기존 프로필 URL 연결 유지.
 - `config/identity-overrides.json`: 소속 약칭과 근거 있는 연구자 식별 교정. 임의 병합 금지.
 - `scripts/build_data.py`, `scripts/layout.mjs`: 서비스용 데이터와 결정적 지도 배치.
 - `src/model.ts`: 검색·필터·집계 의미.
 - `src/App.tsx`, `src/Network.tsx`, `src/style.css`: 화면·네트워크·반응형 표현.
 
-회원 명부, 현재 직위·소속, 외부 학술지의 피인용 논문 목록은 포함하지 않습니다. 전체 설명은 [해석 및 데이터 기준](docs/METHODOLOGY.md)을 확인하세요.
+회원 명부와 외부 학술지의 피인용 논문 목록은 포함하지 않습니다. 일부 현재 소속·직위는 사용자 확인 정보로 구분합니다. 전체 설명은 [해석 및 데이터 기준](docs/METHODOLOGY.md)을 확인하세요.

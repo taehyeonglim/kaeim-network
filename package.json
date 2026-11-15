@@ -7,7 +7,7 @@
     "dev": "vite --host 127.0.0.1",
     "data": "python3 scripts/build_data.py && node scripts/layout.mjs && node scripts/layout-3d.mjs",
     "test": "node --test scripts/public-data.test.mjs && tsx --test src/model.test.ts src/graph3d.test.ts",
-    "test:source": "python3 scripts/test_data.py",
+    "test:source": "python3 scripts/test_identity_review.py && python3 scripts/test_data.py",
     "build": "tsc -b && vite build",
     "preview": "vite preview --host 127.0.0.1",
     "data:3d": "node scripts/layout-3d.mjs"

@@ -5,7 +5,7 @@ export function indexAtlas(a:Atlas){
  const researchers=new Map(a.researchers.map(r=>[r.id,r]));
  const papers=new Map(a.articles.map(p=>[p.id,p]));
  const labels=new Map([...a.taxonomy.topics,...a.taxonomy.policies].map(t=>[t.id,t.label]));
- const search=new Map(a.articles.map(p=>[p.id,normalize([p.title,...p.keywords,...p.topics.map(t=>labels.get(t)),...p.policies.map(t=>labels.get(t)),...p.authors.flatMap(id=>{const r=researchers.get(id)!;return[r.name,...r.institutions,...r.englishNames]})].join(' '))]));
+ const search=new Map(a.articles.map(p=>[p.id,normalize([p.title,...p.keywords,...p.topics.map(t=>labels.get(t)),...p.policies.map(t=>labels.get(t)),...p.authors.flatMap(id=>{const r=researchers.get(id)!;return[r.name,...(r.nameAliases||[]),...r.institutions,...r.englishNames,...(r.currentAffiliations||[]).map(c=>c.institution)]})].join(' '))]));
  return {researchers,papers,search};
 }
 export function filterPapers(a:Atlas,f:Filters,index:ReturnType<typeof indexAtlas>){
@@ -38,8 +38,10 @@ export function readState(a:Atlas,hash=window.location.hash){
  const topic=a.taxonomy.topics.some(t=>t.id===p.get('topic'))?p.get('topic')!:'';
  const policy=a.taxonomy.policies.some(t=>t.id===p.get('policy'))?p.get('policy')!:'';
  const mode=(['coauthor','topics','citations'].includes(p.get('view')||'')?p.get('view'):'coauthor') as 'coauthor'|'topics'|'citations';
- const id=p.get('id');const type=p.get('type');
+ const type=p.get('type');const requestedId=p.get('id');const id=type==='researcher'&&requestedId?(a.researcherRedirects?.[requestedId]||requestedId):requestedId;
  const selection=id&&((type==='researcher'&&a.researchers.some(r=>r.id===id))||(type==='paper'&&a.articles.some(r=>r.id===id)))?{id,type:type as 'researcher'|'paper'}:null;
  const dimension:'2d'|'3d'=p.get('dim')==='3d'?'3d':'2d';
  return {dimension,filters:{from:Math.min(from,to),to:Math.max(from,to),topic,policy,q:p.get('q')||''},mode,selection};
 }
+
+export const identityLabel=(r:Researcher)=>r.identityStatus==='reviewed'?'사용자 확인 연구자 묶음':r.identityStatus==='pending'?'동일인 판단 보류':'이름·소속 기준 임시 묶음';

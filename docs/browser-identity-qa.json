@@ -1,0 +1,41 @@
+{
+  "base": "http://127.0.0.1:5173/",
+  "version": "e76251e3b2115b",
+  "checkedAt": "2026-11-15T13:13:37.737Z",
+  "scenarios": [
+    {
+      "name": "deployed snapshot matches the reviewed version",
+      "status": "passed"
+    },
+    {
+      "name": "old profile URL opens merged papers and rewrites canonical ID",
+      "status": "passed"
+    },
+    {
+      "name": "confirmed namesakes show explicit separation and distinct current affiliations",
+      "status": "passed"
+    },
+    {
+      "name": "deferred identity stays pending and is not labelled a confirmed different person",
+      "status": "passed"
+    },
+    {
+      "name": "partial merge preserves unknown groups",
+      "status": "passed"
+    },
+    {
+      "name": "corrected affiliation appears in profile and source spelling remains inspectable",
+      "status": "passed"
+    },
+    {
+      "name": "corrected name is searchable by old spelling",
+      "status": "passed"
+    },
+    {
+      "name": "mobile reviewed profile fits without horizontal scrolling",
+      "status": "passed"
+    }
+  ],
+  "errors": [],
+  "status": "passed"
+}

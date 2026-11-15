@@ -1,6 +1,6 @@
 {
   "base": "http://127.0.0.1:5173/",
-  "checkedAt": "2026-11-15T02:39:19.783Z",
+  "checkedAt": "2026-11-15T13:14:17.231Z",
   "scenarios": [
     {
       "name": "default map renders real graph and corpus totals",
@@ -57,7 +57,7 @@
   ],
   "errors": [],
   "performance": {
-    "topicFilterMs": 170
+    "topicFilterMs": 69
   },
   "screenshots": [
     "/Users/taehyeong/Developer/GitHub/kaeim-network/tmp/atlas-qa/desktop.png",

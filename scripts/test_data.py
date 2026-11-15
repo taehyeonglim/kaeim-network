@@ -80,7 +80,7 @@ class DataTests(unittest.TestCase):
   self.assertLess(len(gzip.compress((WEB/'public/data/atlas.json').read_bytes())),2_000_000)
  def test_layout_and_identity(self):
   for r in self.rs.values():
-   self.assertEqual(r['identityStatus'],'provisional');self.assertIn(r['id'],self.a['positions']['authors'])
+   self.assertIn(r['identityStatus'],['provisional','reviewed','pending']);self.assertIn(r['id'],self.a['positions']['authors'])
    for p in r['articles']:self.assertIn(r['id'],self.pm[p]['authors'])
   for p in self.pm:self.assertIn(p,self.a['positions']['citations'])
   for mode in self.a['positions'].values():

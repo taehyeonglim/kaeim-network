@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import type {Atlas} from './types';
-import {indexAtlas,filterPapers,connections,researcherStats} from './model';
+import {indexAtlas,filterPapers,connections,researcherStats,readState} from './model';
 const atlas=JSON.parse(fs.readFileSync(new URL('../public/data/atlas.json',import.meta.url),'utf8')) as Atlas;
 const index=indexAtlas(atlas);const all={from:1996,to:2026,q:'',topic:'',policy:''};
 test('unfiltered corpus and empty query',()=>{assert.equal(filterPapers(atlas,all,index).length,1168);assert.equal(filterPapers(atlas,{...all,q:'NONEXISTENT-SEARCH-XYZ'},index).length,0);});
@@ -11,3 +11,14 @@ test('name, institution and Korean phrase search',()=>{const r=atlas.researchers
 test('citation time filter retains older targets as context',()=>{const ps=filterPapers(atlas,{...all,from:2021,to:2021},index);const c=connections(atlas,ps);assert.ok(c.citations.length>0);assert.ok(c.citations.every(e=>index.papers.get(e.source)!.year===2021));assert.ok(c.citations.some(e=>index.papers.get(e.target)!.year<2021));});
 test('coauthor edges use only selected papers',()=>{const ps=filterPapers(atlas,{...all,from:2026,topic:'ai'},index);const ids=new Set(ps.map(p=>p.id));const c=connections(atlas,ps);for(const e of c.coauthors){assert.ok(e.articles.every(id=>ids.has(id)));assert.ok(c.researchers.has(e.source)&&c.researchers.has(e.target));}});
 test('researcher counts count distinct paper links, null coverage preserved',()=>{const r=atlas.researchers.find(r=>r.articles.length>=5)!;const s=researcherStats(r,atlas.articles,atlas);assert.equal(s.papers.length,r.articles.length);const own=new Set(r.articles);assert.equal(s.incoming.length,atlas.citations.filter(e=>own.has(e.target)).length);assert.equal(s.outgoing.length,atlas.citations.filter(e=>own.has(e.source)).length);const empty=researcherStats(r,[],atlas);assert.equal(empty.kciKnown,0);assert.equal(empty.kci,0);assert.equal(empty.incoming.length,0);});
+test('old profile links resolve to the merged profile and retain map state',()=>{
+ for(const [old,id] of Object.entries(atlas.researcherRedirects!)){
+  const s=readState(atlas,`#type=researcher&id=${old}&dim=3d&from=2020&q=교육`);
+  assert.deepEqual(s.selection,{type:'researcher',id});assert.equal(s.dimension,'3d');assert.equal(s.filters.from,2020);assert.equal(s.filters.q,'교육');
+ }
+ assert.equal(readState(atlas,'#type=researcher&id=unknown').selection,null);
+});
+test('corrected name remains discoverable under its original spelling',()=>{
+ assert.deepEqual(filterPapers(atlas,{...all,q:'임병로'},index),filterPapers(atlas,{...all,q:'임병노'},index));
+ const lim=atlas.researchers.filter(r=>r.name==='임태형');assert.equal(lim.length,1);assert.equal(researcherStats(lim[0],atlas.articles,atlas).papers.length,8);
+});

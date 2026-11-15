@@ -1,6 +1,7 @@
 """Build a public, reproducible projection; never mutate the curated sources."""
 import argparse, collections, hashlib, itertools, json, re
 from pathlib import Path
+from identity_review import apply_review
 
 WEB = Path(__file__).resolve().parents[1]
 ROOT = WEB.parent
@@ -45,23 +46,29 @@ def build(source=ROOT/'data/curated', out=WEB/'public/data'):
             eng=english(a.get('english_name'))
             if eng:bases[base].add(eng)
             occ.append({'id':oid,'articleId':p['id'],'position':i,'name':name or '이름 미상','institution':inst,'englishName':a.get('english_name') or '', 'base':base,'eng':eng,'year':int(p['year'])})
-    researchers={}; by_article=collections.defaultdict(list)
     for o in occ:
         key=o['base']+('|' + (o['eng'] or 'unknown') if len(bases[o['base']])>1 else '')
         rid='r-'+digest(key); override=overrides['assignments'].get(o['id'])
         if override:
             assert override.get('evidence') and override.get('researcherId'), 'Override requires evidence'
             rid=override['researcherId']
-        rec=researchers.setdefault(rid,{'id':rid,'name':o['name'],'institutions':set(),'englishNames':set(),'articles':set(),'occurrences':[],'identityStatus':'reviewed' if override else 'provisional'})
+        o['researcherId']=rid
+    review=read(WEB/'config/identity-review.json')
+    identity_info,redirects,identity_summary=apply_review(occ,review)
+    researchers={}; by_article=collections.defaultdict(list); occurrences_by_article=collections.defaultdict(list)
+    for o in occ:
+        rid=o['researcherId']
+        rec=researchers.setdefault(rid,{'id':rid,'name':o['name'],'institutions':set(),'englishNames':set(),'articles':set(),'occurrences':[],'nameAliases':set(),**identity_info[rid]})
+        if o.get('originalName'):rec['nameAliases'].add(o['originalName'])
         if o['institution']:rec['institutions'].add(o['institution'])
         if o['englishName']:rec['englishNames'].add(o['englishName'])
         rec['articles'].add(o['articleId']);rec['occurrences'].append(o['id'])
-        o['researcherId']=rid; by_article[o['articleId']].append(rid)
+        by_article[o['articleId']].append(rid); occurrences_by_article[o['articleId']].append(o)
     name_groups=collections.defaultdict(list)
     for r in researchers.values():name_groups[norm(r['name'])].append(r['id'])
     for r in researchers.values():
         r['sameNameIds']=[x for x in name_groups[norm(r['name'])] if x!=r['id']]
-        for k in ['institutions','englishNames','articles']:r[k]=sorted(r[k])
+        for k in ['institutions','englishNames','articles','nameAliases']:r[k]=sorted(r[k])
     paper_map={p['id']:p for p in articles}; kci={p['kci_id']:p['id'] for p in articles if p['kci_id']}
     dois=collections.defaultdict(set)
     for p in articles:
@@ -92,13 +99,15 @@ def build(source=ROOT/'data/curated', out=WEB/'public/data'):
         citation=int(vals[0]) if vals and str(vals[0]).isdigit() else None
         summary={'id':p['id'],'title':p['title'],'year':int(p['year']),'month':int(p['month'] or 1),'authors':aids,'topics':[t['id'] for t in tags if t['kind']=='topic'],'policies':[t['id'] for t in tags if t['kind']=='policy'],'keywords':list(dict.fromkeys(x['value'] for x in p['keywords'] if x.get('value'))),'kciCitations':citation,'internalCitations':incoming[p['id']],'referenceCount':ref_counts.get(p['id']), 'source':p['provenance']['source']}
         summaries.append(summary)
-        detail={**summary,'authorsDetail':[{'id':rid,'name':a['name'],'institution':a.get('institution') or None,'englishName':a.get('english_name') or None} for a,rid in zip(p['authors'],by_article[p['id']])], 'abstracts':[{'lang':a.get('lang','original'),'value':a['value']} for a in p['abstracts'] if a.get('value')],'doi':p['doi'] or None,'url':p['url'],'volume':p['volume'],'issue':p['issue'],'pages':f"{p['first_page']}–{p['last_page']}",'tags':tags}
+        detail={**summary,'authorsDetail':[{'id':o['researcherId'],'name':o['name'],'institution':o['institution'] if o.get('originalInstitution') else a.get('institution') or None,'englishName':a.get('english_name') or None,**{k:o[k] for k in ['originalName','originalInstitution'] if k in o}} for a,o in zip(p['authors'],occurrences_by_article[p['id']])], 'abstracts':[{'lang':a.get('lang','original'),'value':a['value']} for a in p['abstracts'] if a.get('value')],'doi':p['doi'] or None,'url':p['url'],'volume':p['volume'],'issue':p['issue'],'pages':f"{p['first_page']}–{p['last_page']}",'tags':tags}
         write(out/'articles'/f"{p['id'].replace(':','_')}.json",detail)
     hashes={name:hashlib.sha256((source/name).read_bytes()).hexdigest() for name in ['metadata.json','references.json']}
-    config_hashes={name:hashlib.sha256((WEB/'config'/name).read_bytes()).hexdigest() for name in ['taxonomy.json','identity-overrides.json']}
+    config_hashes={name:hashlib.sha256((WEB/'config'/name).read_bytes()).hexdigest() for name in ['taxonomy.json','identity-overrides.json','identity-review.json']}
     version=digest(json.dumps([hashes,config_hashes],sort_keys=True))
     meta={'version':version,'metadataAsOf':'2026-11-13','inventoryAsOf':'2026-11-15','minYear':min(p['year'] for p in summaries),'maxYear':max(p['year'] for p in summaries),'articleCount':len(articles),'authorOccurrences':len(occ),'researcherGroups':len(researchers),'referenceOccurrences':len(references),'papersWithReferences':len(ref_counts),'internalEdges':len(citations),'directIdReferences':direct_count,'unresolvedCitationConflicts':len(conflict),'missingPeriods':['창간호','1995년','1997년'],'unclassifiedArticles':sum(not p['topics'] for p in summaries),'identityNote':'이름·논문 당시 소속 기준의 임시 연구자 묶음입니다. 실제 인원·회원 수가 아닙니다.','sourceHashes':hashes,'configHashes':config_hashes}
-    payload={'meta':meta,'taxonomy':{k:[{a:b for a,b in t.items() if a!='patterns'} for t in taxonomy[k]] for k in ['topics','policies']},'researchers':sorted(researchers.values(),key=lambda r:r['id']),'articles':sorted(summaries,key=lambda p:p['id']),'coauthors':[{'source':a,'target':b,'articles':sorted(ps)} for (a,b),ps in sorted(coauthors.items())],'citations':citations}
+    meta['identityNote']='이름·논문 당시 소속 기준 묶음에 사용자 확인 통합·분리 판단을 반영했습니다. 보류·미검토 기록이 남아 있어 실제 인원·회원 수가 아닙니다.'
+    meta['identityReview']=identity_summary
+    payload={'meta':meta,'researcherRedirects':redirects,'taxonomy':{k:[{a:b for a,b in t.items() if a!='patterns'} for t in taxonomy[k]] for k in ['topics','policies']},'researchers':sorted(researchers.values(),key=lambda r:r['id']),'articles':sorted(summaries,key=lambda p:p['id']),'coauthors':[{'source':a,'target':b,'articles':sorted(ps)} for (a,b),ps in sorted(coauthors.items())],'citations':citations}
     write(out/'atlas.json',payload)
     write(WEB/'docs/data-build.json',{'meta':meta,'citationConflicts':conflict,'classificationCounts':dict(collections.Counter(t['id'] for t in classifications)),'identityOverrides':len(overrides['assignments']),'unmatchedOverrides':sorted(set(overrides['assignments'])-{o['id'] for o in occ})})
     print(json.dumps(meta,ensure_ascii=False,indent=2))
